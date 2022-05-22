@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 import Loading from '../components/Loading';
 
 class Album extends React.Component {
@@ -17,6 +17,9 @@ class Album extends React.Component {
 
   async componentDidMount() {
     await this.getAlbumList();
+    this.setState({ loading: true });
+    const recoverFavorites = await getFavoriteSongs();
+    this.setState({ favoriteList: recoverFavorites, loading: false });
   }
 
   getAlbumList = async () => {
