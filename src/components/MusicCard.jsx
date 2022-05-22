@@ -3,25 +3,24 @@ import PropTypes from 'prop-types';
 
 class MusicCard extends React.Component {
   render() {
-    const { albumList } = this.props;
+    const { trackName, previewUrl } = this.props;
     return (
-      albumList.map((song) => (
-        <div key={ song.trackId }>
-          <span>{song.trackName}</span>
-          <audio data-testid="audio-component" src={ song.previewUrl } controls>
-            <track kind="captions" />
-            O seu navegador não suporta o elemento
-            <code>audio</code>
-            .
-          </audio>
-        </div>
-      ))
+      <div>
+        <p>{trackName}</p>
+        <audio data-testid="audio-component" src={ previewUrl } controls>
+          <track kind="captions" />
+          O seu navegador não suporta o elemento
+          <code>audio</code>
+          .
+        </audio>
+      </div>
     );
   }
 }
 
 MusicCard.propTypes = {
-  albumList: PropTypes.arrayOf.isRequired,
+  trackName: PropTypes.string.isRequired,
+  previewUrl: PropTypes.string.isRequired,
 };
 
 export default MusicCard;

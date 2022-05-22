@@ -11,26 +11,42 @@ class Album extends React.Component {
     headerAlbum: '',
   }
 
-  render() {
-    const { albumList, headerAlbum, headerBand } = this.state;
+  async componentDidMount() {
+    await this.getAlbumList();
+  }
+
+  getAlbumList = async () => {
     const { match } = this.props;
     const { params } = match;
     const { id } = params;
-    const getAlbumList = async () => {
-      const getAlbumListVar = await getMusics(id);
-      this.setState({ albumList: getAlbumListVar,
-        headerAlbum: getAlbumListVar[0].collectionName,
-        headerBand: getAlbumListVar[0].artistName });
-    };
+    const getAlbumListVar = await getMusics(id);
+    const filteredSongs = getAlbumListVar.filter((song) => song.kind === 'song');
+    this.setState({ albumList: filteredSongs,
+      headerAlbum: getAlbumListVar[0].collectionName,
+      headerBand: getAlbumListVar[0].artistName });
+  };
 
-    getAlbumList();
+  render() {
+    const { albumList, headerAlbum, headerBand } = this.state;
 
     return (
       <div data-testid="page-album">
         <Header />
-        <p data-testid="artist-name">{headerBand}</p>
-        <p data-testid="album-name">{headerAlbum}</p>
-        <MusicCard albumList={ albumList } />
+        <div>
+          <p data-testid="artist-name">{headerBand}</p>
+          <p data-testid="album-name">{headerAlbum}</p>
+          <div>
+            {
+              albumList.map((song) => (
+                <MusicCard
+                  key={ song.trackId }
+                  trackName={ song.trackName }
+                  previewUrl={ song.previewUrl }
+                />
+              ))
+            }
+          </div>
+        </div>
       </div>
     );
   }
