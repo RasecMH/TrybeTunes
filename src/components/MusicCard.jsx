@@ -13,7 +13,7 @@ class MusicCard extends React.Component {
           <code>audio</code>
           .
         </audio>
-        <label htmlFor={ trackName }>
+        <label htmlFor={ trackId }>
           Favorita
           <input
             type="checkbox"
